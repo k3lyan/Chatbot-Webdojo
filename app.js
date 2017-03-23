@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 var homepage = require('./routes/index');
 var webhookpage = require('./routes/webhook');
-
+var weatherpage = require('./routes/weather');
 
 var app = express();
 
@@ -25,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/webhook', webhookpage);
 app.use('/', homepage);
+app.use('/weather', weatherpage);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
