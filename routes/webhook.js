@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var chatService = require('../server/chatService');
+var userService = require('../server/userService');
 
 router.get('/', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
@@ -15,7 +16,7 @@ router.get('/', function(req, res) {
 
 router.post('/', function (req, res) {
   var data = req.body;
-
+  console.log('webhook');
   // Make sure this is a page subscription
   if (data.object === 'page') {
 
@@ -26,13 +27,22 @@ router.post('/', function (req, res) {
 
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
+        var senderId = event.sender.id;
+        var userData = "";
         if (event.message) {
+          if (!(userService.isUserKnown())) {
+            userService.addUser(senderId, 'hello');
+            chatService.sendTextMessage(senderId, 'Bienvenue sur WebDojo !');
+
+          }
           chatService.receivedMessage(event);
         } else {
           console.log("Webhook received unknown event: ", event);
         }
       });
     });
+
+
 
     // Assume all went well.
     //
