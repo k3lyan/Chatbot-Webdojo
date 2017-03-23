@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+var chatService = require('../server/chatService');
 
 router.get('/', function(req, res) {
   if (req.query['hub.mode'] === 'subscribe' &&
@@ -27,7 +27,7 @@ router.post('/', function (req, res) {
       // Iterate over each messaging event
       entry.messaging.forEach(function(event) {
         if (event.message) {
-          receivedMessage(event);
+          chatService.receivedMessage(event);
         } else {
           console.log("Webhook received unknown event: ", event);
         }
@@ -42,11 +42,5 @@ router.post('/', function (req, res) {
     res.sendStatus(200);
   }
 });
-
-function receivedMessage(event) {
-  // Putting a stub for now, we'll expand it in the following steps
-  console.log("Message data: ", event.message);
-}
-
 
 module.exports = router;
