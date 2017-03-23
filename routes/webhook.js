@@ -30,10 +30,9 @@ router.post('/', function (req, res) {
         var senderId = event.sender.id;
         var userData = "";
         if (event.message) {
-          if (!(userService.isUserKnown())) {
-            userService.addUser(senderId, 'hello');
+          if (!(userService.isUserKnown(senderId))) {
             chatService.sendTextMessage(senderId, 'Bienvenue sur WebDojo !');
-
+            userService.addUser(senderId, 'hello');
           }
           chatService.receivedMessage(event);
         } else {
